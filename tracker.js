@@ -33,7 +33,15 @@ function pointOnArc(progress) {
   const cx = 380;
   const cy = 356;
   const r = 245;
-  const angle = Math.PI - Math.PI * (progress / 100);
+
+  // The dial has 20 equal 5% segments. Keep the displayed percentage exact,
+  // but place the hanger at the center of the active segment so it visually
+  // sits squarely on one block rather than on a gap between blocks.
+  const segmentSize = 5;
+  const segmentStart = Math.min(95, Math.floor(Math.max(0, progress) / segmentSize) * segmentSize);
+  const pointerProgress = progress >= 100 ? 100 : segmentStart + segmentSize / 2;
+  const angle = Math.PI - Math.PI * (pointerProgress / 100);
+
   return {
     x: cx + r * Math.cos(angle),
     y: cy - r * Math.sin(angle),
