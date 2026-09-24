@@ -1307,3 +1307,25 @@ button{cursor:pointer}
     top:113px;
   }
 }
+
+
+/* ------------------------------------------------------------------
+   TRUE STAGE RING
+   JS places stage nodes and connector dots on a concentric semicircle.
+------------------------------------------------------------------- */
+.stage-node{
+  transform:translate(-50%,-50%);
+}
+.connector{
+  transform:translate(-50%,-50%);
+}
+
+/* Inline geometry from positionStageRing() is authoritative. */
+.received,
+.processing,
+.washing,
+.drying,
+.ready,
+.c1,.c2,.c3,.c4{
+  margin:0;
+}
