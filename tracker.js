@@ -52,7 +52,7 @@ function render(row, now = Date.now()) {
   const currentStage = result.displayStage;
   const currentIndex = visualStages.indexOf(currentStage);
 
-  el("gauge-progress").setAttribute("stroke-dasharray", `${progress} 100`);
+  el("gauge-progress-mask").setAttribute("stroke-dasharray", `${progress} 100`);
   const p = pointOnArc(progress);
   el("pointer").setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
 
