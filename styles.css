@@ -1184,3 +1184,61 @@ button{cursor:pointer}
 .gauge-segmented{
   stroke-dasharray:4 1;
 }
+
+
+/* ------------------------------------------------------------------
+   DIAL / CONTROL REFINEMENT
+------------------------------------------------------------------- */
+.track-form{
+  align-items:stretch;
+}
+.search-box,
+.track-button{
+  height:40px !important;
+  min-height:40px !important;
+}
+.track-button{
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* 20 equal arc segments: 4 units painted + 1 unit gap = 5 x 20 = 100 */
+.gauge-segmented{
+  stroke-dasharray:4 1 !important;
+  stroke-linecap:butt;
+}
+
+/* Pull the stage markers closer to the arc */
+@media (min-width:641px){
+  .received{left:12%;top:63%}
+  .processing{left:27%;top:34%}
+  .washing{left:50%;top:16%}
+  .drying{left:73%;top:34%}
+  .ready{left:88%;top:63%}
+
+  .c1{left:20%;top:50%}
+  .c2{left:37%;top:26%}
+  .c3{right:37%;top:26%}
+  .c4{right:20%;top:50%}
+}
+
+@media (max-width:640px){
+  .search-box,
+  .track-button{
+    height:40px !important;
+    min-height:40px !important;
+  }
+
+  .received{left:12%;top:63%}
+  .processing{left:27%;top:34%}
+  .washing{left:50%;top:16%}
+  .drying{left:73%;top:34%}
+  .ready{left:88%;top:63%}
+
+  .c1{left:20%;top:50%}
+  .c2{left:37%;top:26%}
+  .c3{right:37%;top:26%}
+  .c4{right:20%;top:50%}
+}
