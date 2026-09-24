@@ -48,6 +48,57 @@ function pointOnArc(progress) {
   };
 }
 
+
+function positionStageRing() {
+  const visual = document.querySelector(".visual-stage");
+  const gauge = document.querySelector(".gauge-svg");
+  if (!visual || !gauge) return;
+
+  const visualRect = visual.getBoundingClientRect();
+  const gaugeRect = gauge.getBoundingClientRect();
+
+  // The SVG viewBox is 760 × 470 and its arc center is (380, 356), radius 245.
+  // Convert that center/radius into the current rendered pixel size.
+  const sx = gaugeRect.width / 760;
+  const sy = gaugeRect.height / 470;
+  const centerX = (gaugeRect.left - visualRect.left) + 380 * sx;
+  const centerY = (gaugeRect.top - visualRect.top) + 356 * sy;
+  const gaugeRadius = 245 * Math.min(sx, sy);
+
+  // Keep markers on a concentric outer arc rather than floating above the dial.
+  const outerRadius = gaugeRadius + Math.max(28, gaugeRadius * 0.22);
+
+  const stageAngles = new Map([
+    ["Received", 180],
+    ["Processing", 135],
+    ["Washing", 90],
+    ["Drying", 45],
+    ["Ready for Pick-Up", 0],
+  ]);
+
+  document.querySelectorAll(".stage-node").forEach((node) => {
+    const stage = node.dataset.stage;
+    const degrees = stageAngles.get(stage);
+    if (degrees == null) return;
+    const radians = degrees * Math.PI / 180;
+    const x = centerX + outerRadius * Math.cos(radians);
+    const y = centerY - outerRadius * Math.sin(radians);
+    node.style.left = `${x}px`;
+    node.style.top = `${y}px`;
+  });
+
+  const connectorAngles = [157.5, 112.5, 67.5, 22.5];
+  document.querySelectorAll(".connector").forEach((dot, index) => {
+    const degrees = connectorAngles[index];
+    const radians = degrees * Math.PI / 180;
+    const dotRadius = gaugeRadius + Math.max(15, gaugeRadius * 0.11);
+    const x = centerX + dotRadius * Math.cos(radians);
+    const y = centerY - dotRadius * Math.sin(radians);
+    dot.style.left = `${x}px`;
+    dot.style.top = `${y}px`;
+  });
+}
+
 function render(row, now = Date.now()) {
   const result = calculate(row, now);
   if (result.progress == null) {
@@ -87,6 +138,7 @@ function render(row, now = Date.now()) {
   });
 
   el("gauge-description").textContent = `Estimated progress ${progress} percent. Staff confirmed status ${result.status}.`;
+  requestAnimationFrame(positionStageRing);
 }
 
 async function lookupOrder(code) {
@@ -170,3 +222,7 @@ render({
   status_changed_at: new Date(Date.now() - 30 * MINUTE).toISOString(),
   express: false,
 });
+
+
+window.addEventListener("resize", positionStageRing);
+requestAnimationFrame(positionStageRing);
