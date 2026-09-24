@@ -99,8 +99,13 @@
               </filter>
             </defs>
 
-            <path class="gauge-track" d="M135 356 A245 245 0 0 1 625 356" pathLength="100"></path>
-            <path id="gauge-progress" class="gauge-progress" d="M135 356 A245 245 0 0 1 625 356" pathLength="100" stroke-dasharray="42 100"></path>
+            <defs>
+              <mask id="gaugeProgressMask">
+                <path id="gauge-progress-mask" class="gauge-progress-mask" d="M135 356 A245 245 0 0 1 625 356" pathLength="100" stroke-dasharray="42 100"></path>
+              </mask>
+            </defs>
+            <path class="gauge-track gauge-segmented" d="M135 356 A245 245 0 0 1 625 356" pathLength="100" stroke-dasharray="4 1"></path>
+            <path class="gauge-progress gauge-segmented" d="M135 356 A245 245 0 0 1 625 356" pathLength="100" stroke-dasharray="4 1" mask="url(#gaugeProgressMask)"></path>
             <path class="gauge-inner-line" d="M155 356 A225 225 0 0 1 605 356"></path>
 
             <g id="pointer" class="pointer" transform="translate(268 143)">
