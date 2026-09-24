@@ -1,9 +1,6 @@
 name: Deploy Tracker Lab
 
 on:
-  push:
-    branches:
-      - tracker-prototype-v1
   workflow_dispatch:
 
 permissions:
