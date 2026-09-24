@@ -1329,3 +1329,9 @@ button{cursor:pointer}
 .c1,.c2,.c3,.c4{
   margin:0;
 }
+
+
+/* Stage-ring anchor fix: JS positions the icon center on the semicircle. */
+.stage-node{
+  transform:translateX(-50%) !important;
+}
