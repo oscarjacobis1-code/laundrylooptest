@@ -1242,3 +1242,68 @@ button{cursor:pointer}
   .c3{right:37%;top:26%}
   .c4{right:20%;top:50%}
 }
+
+
+/* ------------------------------------------------------------------
+   TIGHT DIAL GEOMETRY
+   Keep the popup scale; bring labels/icons into the dial composition.
+------------------------------------------------------------------- */
+@media (min-width:641px){
+  .tracker-view{
+    margin-top:-5px;
+  }
+  .visual-stage{
+    margin-top:-10px;
+  }
+  .soft-halo{
+    top:38px;
+  }
+  .gauge-svg{
+    top:31px;
+  }
+
+  .washing{left:50%;top:19%}
+  .processing{left:29%;top:39%}
+  .drying{left:71%;top:39%}
+  .received{left:15%;top:67%}
+  .ready{left:85%;top:67%}
+
+  .c1{left:22%;top:54%}
+  .c2{left:38%;top:31%}
+  .c3{right:38%;top:31%}
+  .c4{right:22%;top:54%}
+
+  .gauge-center{
+    top:121px;
+  }
+}
+
+@media (max-width:640px){
+  .tracker-view{
+    margin-top:-3px;
+  }
+  .visual-stage{
+    margin-top:-6px;
+  }
+  .soft-halo{
+    top:44px;
+  }
+  .gauge-svg{
+    top:35px;
+  }
+
+  .washing{left:50%;top:19%}
+  .processing{left:29%;top:39%}
+  .drying{left:71%;top:39%}
+  .received{left:15%;top:67%}
+  .ready{left:85%;top:67%}
+
+  .c1{left:22%;top:54%}
+  .c2{left:38%;top:31%}
+  .c3{right:38%;top:31%}
+  .c4{right:22%;top:54%}
+
+  .gauge-center{
+    top:113px;
+  }
+}
