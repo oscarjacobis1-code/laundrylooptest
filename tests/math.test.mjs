@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import {
   calculate,
   easeOutCirc,
@@ -92,4 +93,19 @@ test("pickup ETA is separate from gauge stage budgets", () => {
   assert.equal(stageBudget("Received", true), HOUR);
   assert.equal(pickupEstimate("2026-09-23T15:59:00Z", true).toISOString(), "2026-09-23T22:00:00.000Z");
   assert.equal(pickupEstimate("2026-09-23T16:00:00Z", true).toISOString(), "2026-09-24T14:00:00.000Z");
+});
+
+
+test("tracker dial keeps equal visual segments and 50/50 lookup controls", async () => {
+  const [html, css, tracker] = await Promise.all([
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
+    readFile(new URL("../styles.css", import.meta.url), "utf8"),
+    readFile(new URL("../tracker.js", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(html, /gauge-segmented/);
+  assert.match(html, /stroke-dasharray="4 1"/);
+  assert.match(html, /gauge-progress-mask/);
+  assert.match(css, /grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
+  assert.match(tracker, /gauge-progress-mask/);
 });
