@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071d59">
+  <title>Laundry Loop Tracker Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="tracker-card" aria-labelledby="tracker-title">
+      <button class="close-button" type="button" aria-label="Close preview">×</button>
+
+      <header class="tracker-header">
+        <div class="brand-lockup">
+          <img src="https://thelaundryloop.net/laundry-loop-logo.jpg" alt="The Laundry Loop">
+        </div>
+
+        <div class="header-main">
+          <h1 id="tracker-title">Track Your Order</h1>
+          <form id="track-form" class="track-form">
+            <label class="search-box">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="14" cy="14" r="8.5"></circle>
+                <path d="m20.5 20.5 6 6"></path>
+              </svg>
+              <input id="order-code" value="A26AF423" autocomplete="off" spellcheck="false" aria-label="Order code">
+            </label>
+            <button class="track-button" type="submit">Track Order</button>
+          </form>
+        </div>
+      </header>
+
+      <div id="message" class="message hidden" role="status"></div>
+
+      <section id="tracker-view" class="tracker-view">
+        <div class="visual-stage">
+          <div class="soft-halo"></div>
+
+          <div class="stage-node received" data-stage="Received">
+            <div class="stage-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 18h28l-3 20H13zM17 18l3-8m11 8-3-8M17 25v7m7-7v7m7-7v7"></path></svg>
+            </div>
+            <span>Received</span>
+          </div>
+
+          <div class="stage-node processing" data-stage="Processing">
+            <div class="stage-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M17 10l7 4 7-4 9 8-6 6v14H14V24l-6-6 9-8zM19 10c1 3 9 3 10 0"></path></svg>
+            </div>
+            <span>Processing</span>
+          </div>
+
+          <div class="stage-node washing" data-stage="Washing">
+            <div class="stage-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="7" width="28" height="34" rx="3"></rect><circle cx="24" cy="27" r="9"></circle><path d="M15 13h3m5 0h10M18 26c3-3 8-3 12 0"></path></svg>
+            </div>
+            <span>Washing</span>
+          </div>
+
+          <div class="stage-node drying" data-stage="Drying">
+            <div class="stage-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 10c-5 7 5 9 0 16s5 9 0 16M24 10c-5 7 5 9 0 16s5 9 0 16M33 10c-5 7 5 9 0 16s5 9 0 16"></path></svg>
+            </div>
+            <span>Drying</span>
+          </div>
+
+          <div class="stage-node ready" data-stage="Ready for Pick-Up">
+            <div class="stage-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 14h26v8H11zm3 10h23v8H14zm-3 10h26v7H11z"></path></svg>
+            </div>
+            <span>Ready<br>for Pickup</span>
+          </div>
+
+          <span class="connector c1"></span>
+          <span class="connector c2"></span>
+          <span class="connector c3"></span>
+          <span class="connector c4"></span>
+
+          <svg class="gauge-svg" viewBox="0 0 760 470" role="img" aria-labelledby="gauge-title gauge-description">
+            <title id="gauge-title">Laundry progress gauge</title>
+            <desc id="gauge-description">Estimated progress within the current staff confirmed stage.</desc>
+            <defs>
+              <linearGradient id="progressGradient" x1="0" x2="1">
+                <stop offset="0" stop-color="#0a4b9e"/>
+                <stop offset=".55" stop-color="#0c78c8"/>
+                <stop offset="1" stop-color="#38b3ef"/>
+              </linearGradient>
+              <linearGradient id="trackGradient" x1="0" x2="1">
+                <stop offset="0" stop-color="#d9e9f5"/>
+                <stop offset="1" stop-color="#c8d9e8"/>
+              </linearGradient>
+              <filter id="bubbleShadow" x="-80%" y="-80%" width="260%" height="260%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0a2b64" flood-opacity=".18"/>
+              </filter>
+            </defs>
+
+            <path class="gauge-track" d="M135 356 A245 245 0 0 1 625 356" pathLength="100"></path>
+            <path id="gauge-progress" class="gauge-progress" d="M135 356 A245 245 0 0 1 625 356" pathLength="100" stroke-dasharray="42 100"></path>
+            <path class="gauge-inner-line" d="M155 356 A225 225 0 0 1 605 356"></path>
+
+            <g id="pointer" class="pointer" transform="translate(268 143)">
+              <circle r="31" class="pointer-bubble"></circle>
+              <path d="M-13 7 0-2 13 7M0-2v-9c0-8 10-8 10 0" class="hanger"></path>
+            </g>
+          </svg>
+
+          <div class="gauge-center">
+            <div class="infinity">∞</div>
+            <strong id="progress-value">42%</strong>
+            <span id="progress-stage">WASHING</span>
+            <div class="stage-waves" aria-hidden="true">≋</div>
+          </div>
+
+          <div class="water-wave wave-left"></div>
+          <div class="water-wave wave-right"></div>
+        </div>
+
+        <section class="status-card">
+          <h2 id="status-title">Your laundry is still in the loop!</h2>
+          <p id="status-copy">Our team is working hard to get your clothes fresh, folded, and done for you.</p>
+          <span id="confirmed-chip" class="confirmed-chip">Staff confirmed: Washing</span>
+        </section>
+
+        <section class="info-strip">
+          <article>
+            <div class="info-icon">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11"></circle><path d="M16 9v8l5 3"></path></svg>
+            </div>
+            <div><span>Order Code</span><strong id="order-code-value">A26AF423</strong></div>
+          </article>
+
+          <article>
+            <div class="info-icon">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="8" width="20" height="18" rx="2"></rect><path d="M10 5v6m12-6v6M6 13h20"></path></svg>
+            </div>
+            <div><span>Last Updated</span><strong id="last-updated">—</strong></div>
+          </article>
+
+          <article>
+            <div class="info-icon">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="8" width="20" height="18" rx="2"></rect><path d="M10 5v6m12-6v6M6 13h20"></path></svg>
+            </div>
+            <div><span>Estimated Pickup</span><strong id="estimated-pickup">—</strong></div>
+          </article>
+        </section>
+
+        <section class="notice-strip">
+          <div class="leaf-icon">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M29 7C17 7 9 12 8 25c6 1 12-2 15-7-3 5-8 9-14 11"></path></svg>
+          </div>
+          <p id="notice-copy">In some cases, our staff may have your laundry ready, folded and done before 48 hours. You will receive an update when it is ready for pickup.</p>
+        </section>
+      </section>
+    </section>
+
+    <aside class="lab-panel">
+      <div>
+        <span class="lab-kicker">TRACKER LAB</span>
+        <h2>Prototype controls</h2>
+        <p>These controls exist only in this test repository. They let us tune the gauge without touching the real Laundry Loop site.</p>
+      </div>
+
+      <label>Staff confirmed stage
+        <select id="lab-stage">
+          <option>Received</option>
+          <option>Washing</option>
+          <option>Drying</option>
+          <option>Ready for Pick-Up</option>
+        </select>
+      </label>
+
+      <label>Minutes since staff update
+        <input id="lab-minutes" type="range" min="0" max="300" step="5" value="30">
+        <output id="lab-minutes-value">30 min</output>
+      </label>
+
+      <label class="checkbox-row">
+        <input id="lab-express" type="checkbox">
+        Express order
+      </label>
+
+      <div class="lab-actions">
+        <button id="apply-demo" type="button">Apply Demo</button>
+        <button id="load-live" type="button" class="secondary">Load Live Order</button>
+      </div>
+
+      <div class="math-note">
+        <strong>Gauge math</strong>
+        <span>circular ease-out inside the staff-confirmed stage</span>
+        <span>Pickup ETA is calculated separately</span>
+      </div>
+    </aside>
+  </main>
+
+  <script src="./tracker.js"></script>
+</body>
+</html>
