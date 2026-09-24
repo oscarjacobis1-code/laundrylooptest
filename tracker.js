@@ -65,35 +65,41 @@ function positionStageRing() {
   const centerY = (gaugeRect.top - visualRect.top) + 356 * sy;
   const gaugeRadius = 245 * Math.min(sx, sy);
 
-  // Keep markers on a true concentric ring just outside the segmented dial.
-  // End stages sit slightly above the arc endpoints so the five markers read
-  // as one circular family instead of a horizontal row.
-  const outerRadius = gaugeRadius + Math.max(12, gaugeRadius * 0.09);
+  // Anchor the ICON CENTERS, not the whole icon+label blocks, to one
+  // concentric semicircle. This keeps the labels clear of the segmented dial.
+  const outerRadius = gaugeRadius + Math.max(30, gaugeRadius * 0.18);
 
   const stageAngles = new Map([
-    ["Received", 165],
-    ["Processing", 127.5],
+    ["Received", 170],
+    ["Processing", 130],
     ["Washing", 90],
-    ["Drying", 52.5],
-    ["Ready for Pick-Up", 15],
+    ["Drying", 50],
+    ["Ready for Pick-Up", 10],
   ]);
 
   document.querySelectorAll(".stage-node").forEach((node) => {
     const stage = node.dataset.stage;
     const degrees = stageAngles.get(stage);
     if (degrees == null) return;
+
     const radians = degrees * Math.PI / 180;
-    const x = centerX + outerRadius * Math.cos(radians);
-    const y = centerY - outerRadius * Math.sin(radians);
-    node.style.left = `${x}px`;
-    node.style.top = `${y}px`;
+    const icon = node.querySelector(".stage-icon");
+    const iconHeight = icon?.getBoundingClientRect().height || 46;
+
+    const iconCenterX = centerX + outerRadius * Math.cos(radians);
+    const iconCenterY = centerY - outerRadius * Math.sin(radians);
+
+    node.style.left = `${iconCenterX}px`;
+    node.style.top = `${iconCenterY - iconHeight / 2}px`;
   });
 
-  const connectorAngles = [146.25, 108.75, 71.25, 33.75];
+  // Connector dots follow a smaller concentric ring between the stage icons
+  // and the dial so the entire composition reads as one semicircle.
+  const connectorAngles = [150, 110, 70, 30];
   document.querySelectorAll(".connector").forEach((dot, index) => {
     const degrees = connectorAngles[index];
     const radians = degrees * Math.PI / 180;
-    const dotRadius = gaugeRadius + Math.max(7, gaugeRadius * 0.045);
+    const dotRadius = gaugeRadius + Math.max(13, gaugeRadius * 0.08);
     const x = centerX + dotRadius * Math.cos(radians);
     const y = centerY - dotRadius * Math.sin(radians);
     dot.style.left = `${x}px`;
