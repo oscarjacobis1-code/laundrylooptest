@@ -65,9 +65,9 @@ function positionStageRing() {
   const centerY = (gaugeRect.top - visualRect.top) + 356 * sy;
   const gaugeRadius = 245 * Math.min(sx, sy);
 
-  // Anchor the ICON CENTERS, not the whole icon+label blocks, to one
-  // concentric semicircle. This keeps the labels clear of the segmented dial.
-  const outerRadius = gaugeRadius + Math.max(30, gaugeRadius * 0.18);
+  // Leave room for the label below each icon, especially at the crown of
+  // the arc. Scale the clearance with the actual rendered gauge width.
+  const outerRadius = gaugeRadius + gaugeRect.width * 0.14;
 
   const stageAngles = new Map([
     ["Received", 170],
