@@ -32,7 +32,7 @@ function stageStory(stage) {
 function pointOnArc(progress) {
   const cx = 380;
   const cy = 356;
-  const r = 245;
+  const r = 205;
 
   // The dial has 20 equal 5% segments. Keep the displayed percentage exact,
   // but place the hanger at the center of the active segment so it visually
@@ -68,14 +68,14 @@ function positionStageRing() {
   // Keep markers on a true concentric ring just outside the segmented dial.
   // End stages sit slightly above the arc endpoints so the five markers read
   // as one circular family instead of a horizontal row.
-  const outerRadius = gaugeRadius + Math.max(22, gaugeRadius * 0.17);
+  const outerRadius = gaugeRadius + Math.max(12, gaugeRadius * 0.09);
 
   const stageAngles = new Map([
-    ["Received", 170],
-    ["Processing", 135],
+    ["Received", 165],
+    ["Processing", 127.5],
     ["Washing", 90],
-    ["Drying", 45],
-    ["Ready for Pick-Up", 10],
+    ["Drying", 52.5],
+    ["Ready for Pick-Up", 15],
   ]);
 
   document.querySelectorAll(".stage-node").forEach((node) => {
@@ -83,20 +83,17 @@ function positionStageRing() {
     const degrees = stageAngles.get(stage);
     if (degrees == null) return;
     const radians = degrees * Math.PI / 180;
-    // Give the top Washing marker a little extra breathing room so the
-    // moving hanger never collides with its label.
-    const markerRadius = outerRadius + (stage === "Washing" ? 10 : 0);
-    const x = centerX + markerRadius * Math.cos(radians);
-    const y = centerY - markerRadius * Math.sin(radians);
+    const x = centerX + outerRadius * Math.cos(radians);
+    const y = centerY - outerRadius * Math.sin(radians);
     node.style.left = `${x}px`;
     node.style.top = `${y}px`;
   });
 
-  const connectorAngles = [152.5, 112.5, 67.5, 27.5];
+  const connectorAngles = [146.25, 108.75, 71.25, 33.75];
   document.querySelectorAll(".connector").forEach((dot, index) => {
     const degrees = connectorAngles[index];
     const radians = degrees * Math.PI / 180;
-    const dotRadius = gaugeRadius + Math.max(12, gaugeRadius * 0.08);
+    const dotRadius = gaugeRadius + Math.max(7, gaugeRadius * 0.045);
     const x = centerX + dotRadius * Math.cos(radians);
     const y = centerY - dotRadius * Math.sin(radians);
     dot.style.left = `${x}px`;
