@@ -65,15 +65,17 @@ function positionStageRing() {
   const centerY = (gaugeRect.top - visualRect.top) + 356 * sy;
   const gaugeRadius = 245 * Math.min(sx, sy);
 
-  // Keep markers on a concentric outer arc rather than floating above the dial.
-  const outerRadius = gaugeRadius + Math.max(28, gaugeRadius * 0.22);
+  // Keep markers on a true concentric ring just outside the segmented dial.
+  // End stages sit slightly above the arc endpoints so the five markers read
+  // as one circular family instead of a horizontal row.
+  const outerRadius = gaugeRadius + Math.max(22, gaugeRadius * 0.17);
 
   const stageAngles = new Map([
-    ["Received", 180],
+    ["Received", 170],
     ["Processing", 135],
     ["Washing", 90],
     ["Drying", 45],
-    ["Ready for Pick-Up", 0],
+    ["Ready for Pick-Up", 10],
   ]);
 
   document.querySelectorAll(".stage-node").forEach((node) => {
@@ -81,17 +83,20 @@ function positionStageRing() {
     const degrees = stageAngles.get(stage);
     if (degrees == null) return;
     const radians = degrees * Math.PI / 180;
-    const x = centerX + outerRadius * Math.cos(radians);
-    const y = centerY - outerRadius * Math.sin(radians);
+    // Give the top Washing marker a little extra breathing room so the
+    // moving hanger never collides with its label.
+    const markerRadius = outerRadius + (stage === "Washing" ? 10 : 0);
+    const x = centerX + markerRadius * Math.cos(radians);
+    const y = centerY - markerRadius * Math.sin(radians);
     node.style.left = `${x}px`;
     node.style.top = `${y}px`;
   });
 
-  const connectorAngles = [157.5, 112.5, 67.5, 22.5];
+  const connectorAngles = [152.5, 112.5, 67.5, 27.5];
   document.querySelectorAll(".connector").forEach((dot, index) => {
     const degrees = connectorAngles[index];
     const radians = degrees * Math.PI / 180;
-    const dotRadius = gaugeRadius + Math.max(15, gaugeRadius * 0.11);
+    const dotRadius = gaugeRadius + Math.max(12, gaugeRadius * 0.08);
     const x = centerX + dotRadius * Math.cos(radians);
     const y = centerY - dotRadius * Math.sin(radians);
     dot.style.left = `${x}px`;
@@ -111,7 +116,9 @@ function render(row, now = Date.now()) {
   const currentStage = result.displayStage;
   const currentIndex = visualStages.indexOf(currentStage);
 
-  el("gauge-progress-mask").setAttribute("stroke-dasharray", `${progress} 100`);
+  // Keep the number exact, but only illuminate complete 5% dial blocks.
+  const filledSegments = progress >= 100 ? 100 : Math.floor(progress / 5) * 5;
+  el("gauge-progress-mask").setAttribute("stroke-dasharray", `${filledSegments} 100`);
   const p = pointOnArc(progress);
   el("pointer").setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
 
